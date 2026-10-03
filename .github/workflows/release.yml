@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+
+      - name: Install frontend deps
+        working-directory: apps/desktop
+        run: bun install --frozen-lockfile
+
+      - name: Build installers (NSIS + MSI)
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          projectPath: apps/desktop
+          tagName: ${{ github.ref_name }}
+          releaseName: "Rust SkinID Studio ${{ github.ref_name }}"
+          releaseBody: |
+            ## Downloads
+
+            | File | Use |
+            | --- | --- |
+            | `*-setup.exe` (NSIS) | Installer + uninstaller (removes app data) |
+            | `*.msi` | Alternative Windows installer |
+            | `*-portable-*-windows-x64.zip` | Unzip & run — delete the folder to uninstall |
+
+            ### Requirements
+            - Windows 10/11 x64
+            - Steam client logged in (account that owns Rust) for live SkinID creation
+            - Optional: `steam_api64.dll` next to the exe for live Workshop publish (see README)
+
+            Dry-run works without Steam / DLL.
+          releaseDraft: false
+          prerelease: false
+          args: -- --features steam
+
+      - name: Package portable ZIP
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart("v")
+          ./scripts/package-portable.ps1 -Version $version -OutDir dist/release
+
+      - name: Upload portable ZIP to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/release/*-portable-*-windows-x64.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
