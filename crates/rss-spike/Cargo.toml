@@ -1,0 +1,20 @@
+[package]
+name = "rss-spike"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Phase-0 feasibility CLI: prepare + dry-run/live Workshop publish"
+
+[[bin]]
+name = "rss-spike"
+path = "src/main.rs"
+
+[features]
+default = ["steam"]
+steam = ["rss-core/steam"]
+
+[dependencies]
+anyhow.workspace = true
+clap.workspace = true
+rss-core = { workspace = true }
+serde_json.workspace = true

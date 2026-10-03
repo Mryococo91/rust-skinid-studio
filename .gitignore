@@ -1,0 +1,39 @@
+# Build
+/target/
+**/target/
+dist/
+dist/release/
+apps/desktop/dist/
+apps/desktop/node_modules/
+apps/desktop/package-lock.json
+apps/desktop/tsconfig.tsbuildinfo
+package-lock.json
+tmp/
+*.pdb
+*.exe
+!scripts/**/*.ps1
+
+# Steamworks SDK / redistributables (do not commit Valve binaries)
+**/steam_api.dll
+**/steam_api64.dll
+**/libsteam_api.so
+**/libsteam_api.dylib
+**/steamworks_sdk/
+steam_appid.txt
+
+# Env / OS
+.env
+.env.*
+.DS_Store
+Thumbs.db
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Local data
+data/
+*.db
+apps/desktop/src-tauri/gen/

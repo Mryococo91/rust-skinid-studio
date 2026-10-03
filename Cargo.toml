@@ -1,0 +1,33 @@
+[workspace]
+resolver = "2"
+members = [
+  "crates/rss-core",
+  "crates/rss-spike",
+  "apps/desktop/src-tauri",
+  "tools/gen-icon",
+]
+default-members = [
+  "crates/rss-core",
+  "crates/rss-spike",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+authors = ["Rust SkinID Studio Contributors"]
+repository = "https://github.com/Mryococo91/rust-skinid-studio"
+
+[workspace.dependencies]
+rss-core = { path = "crates/rss-core" }
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+image = "0.25"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+rusqlite = { version = "0.32", features = ["bundled"] }
+tempfile = "3"
+base64 = "0.22"

@@ -1,0 +1,30 @@
+[package]
+name = "rust-supply-signal-studio"
+version = "0.1.0"
+description = "Desktop app to create unique Rust Workshop SkinIDs for custom icons"
+authors = ["Rust SkinID Studio Contributors"]
+edition = "2021"
+license = "MIT"
+
+[lib]
+name = "rust_supply_signal_studio_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[features]
+default = ["steam"]
+steam = ["rss-core/steam"]
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+tauri-plugin-shell = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rss-core = { path = "../../../crates/rss-core" }
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4"] }
+base64 = "0.22"
+thiserror = "2"
